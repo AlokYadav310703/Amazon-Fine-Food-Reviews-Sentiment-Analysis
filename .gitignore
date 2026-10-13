@@ -1,0 +1,14 @@
+# data: do not commit the Kaggle files
+data/*
+!data/sample_reviews.csv
+
+# python / notebooks
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# large model weights: use Git LFS or the Hugging Face Hub instead of plain git
+models/transformer/*.safetensors
+models/transformer/*.bin

@@ -1,0 +1,22 @@
+# One file for everything: training notebook + Streamlit app.
+# Python 3.10 or newer. Lower bounds only; see the README for the versions this was built and tested with.
+
+# app
+streamlit>=1.40
+
+# classical model, data handling
+scikit-learn>=1.3
+pandas>=2.0
+numpy>=1.24
+joblib>=1.3
+
+# transformer fine-tuning and prediction
+torch>=2.3
+transformers>=4.41
+
+# notebook only: plots, markdown tables, optional TweetEval download, Jupyter
+matplotlib>=3.7
+seaborn>=0.12
+tabulate>=0.9
+datasets>=2.18
+jupyter>=1.0

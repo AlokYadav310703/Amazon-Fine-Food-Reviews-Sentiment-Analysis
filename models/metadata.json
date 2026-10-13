@@ -1,0 +1,179 @@
+{
+  "created": "2026-10-09",
+  "task": "3-class product-review sentiment from star ratings (1-2 negative, 3 neutral, 4-5 positive)",
+  "domain": "reviews",
+  "item_name": "review",
+  "page_title": "Review Sentiment Classifier",
+  "app_title": "\ud83d\uded2 Review Sentiment",
+  "caption": "Classifies English product reviews as negative, neutral or positive. Trained on star-rated Amazon-style reviews; it can misread sarcasm, and 3-star reviews are often mixed.",
+  "examples": [
+    "Absolutely delicious, best coffee I have ever bought. Will order again!",
+    "Terrible. Arrived stale and the taste was awful. Not worth the money.",
+    "It is okay. Nothing special but not bad either.",
+    "Great price, but the packaging was damaged and shipping took two weeks.",
+    "Does exactly what it says. Good value."
+  ],
+  "labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "dataset": {
+    "name": "Product reviews (Reviews.csv), capped at 10000 per class",
+    "total_rows_after_cleaning": 30000,
+    "unique_reviews_before_sampling": 393134,
+    "natural_class_share": {
+      "positive": 0.7795,
+      "negative": 0.1449,
+      "neutral": 0.0756
+    },
+    "train": {
+      "rows": 21000,
+      "class_share": {
+        "positive": 0.3333,
+        "negative": 0.3333,
+        "neutral": 0.3333
+      }
+    },
+    "validation": {
+      "rows": 4500,
+      "class_share": {
+        "neutral": 0.3333,
+        "positive": 0.3333,
+        "negative": 0.3333
+      }
+    },
+    "test": {
+      "rows": 4500,
+      "class_share": {
+        "positive": 0.3333,
+        "negative": 0.3333,
+        "neutral": 0.3333
+      }
+    }
+  },
+  "lr": {
+    "file": "lr_pipeline.joblib",
+    "display_name": "TF-IDF + LogReg (tuned)",
+    "remove_stopwords": false,
+    "best_params": {
+      "clf__C": "1",
+      "tfidf__max_features": "50000",
+      "tfidf__ngram_range": "(1, 2)"
+    },
+    "cv_macro_f1": 0.7220358419979855,
+    "val_accuracy": 0.7131111111111111,
+    "val_macro_f1": 0.7132341927976699,
+    "test": {
+      "accuracy": 0.7202222222222222,
+      "macro_f1": 0.7196968315863099,
+      "per_class": {
+        "negative": {
+          "precision": 0.717828418230563,
+          "recall": 0.714,
+          "f1-score": 0.7159090909090909
+        },
+        "neutral": {
+          "precision": 0.6398104265402843,
+          "recall": 0.63,
+          "f1-score": 0.6348673160900236
+        },
+        "positive": {
+          "precision": 0.8001306335728282,
+          "recall": 0.8166666666666667,
+          "f1-score": 0.8083140877598153
+        }
+      }
+    },
+    "ms_per_tweet": 0.1446855760004837
+  },
+  "transformer": {
+    "dir": "transformer",
+    "display_name": "roberta-base (fine-tuned)",
+    "base_model": "roberta-base",
+    "epochs": 10,
+    "max_len": 128,
+    "train_tweets": 21000,
+    "train_minutes": 30.51813063621521,
+    "device": "cuda",
+    "val_accuracy": 0.7815555555555556,
+    "val_macro_f1": 0.7812710286913555,
+    "test": {
+      "accuracy": 0.7728888888888888,
+      "macro_f1": 0.7727410026816998,
+      "per_class": {
+        "negative": {
+          "precision": 0.8025241276911655,
+          "recall": 0.7206666666666667,
+          "f1-score": 0.7593958552862663
+        },
+        "neutral": {
+          "precision": 0.669609079445145,
+          "recall": 0.708,
+          "f1-score": 0.6882696046662347
+        },
+        "positive": {
+          "precision": 0.8519463943841736,
+          "recall": 0.89,
+          "f1-score": 0.8705575480925987
+        }
+      }
+    },
+    "ms_per_tweet": 7.696247100000619
+  },
+  "cross_dataset": {
+    "source": "TweetEval (sentiment, test split)",
+    "n": 3000,
+    "metrics": {
+      "TF-IDF + LogReg (tuned)": {
+        "accuracy": 0.367,
+        "macro_f1": 0.35216757794695214
+      },
+      "roberta-base (fine-tuned)": {
+        "accuracy": 0.5416666666666666,
+        "macro_f1": 0.535499369928886
+      }
+    }
+  },
+  "natural_check": {
+    "n": 5000,
+    "metrics": {
+      "TF-IDF + LogReg (tuned)": {
+        "accuracy": 0.7688,
+        "macro_f1": 0.6342296709643978,
+        "recall": {
+          "negative": 0.7184873949579832,
+          "neutral": 0.6737400530503979,
+          "positive": 0.7871578408800205
+        },
+        "precision": {
+          "negative": 0.6129032258064516,
+          "neutral": 0.25760649087221094,
+          "positive": 0.9685237645577589
+        }
+      },
+      "roberta-base (fine-tuned)": {
+        "accuracy": 0.8562,
+        "macro_f1": 0.7208905341254894,
+        "recall": {
+          "negative": 0.7492997198879552,
+          "neutral": 0.6976127320954907,
+          "positive": 0.8910207214121258
+        },
+        "precision": {
+          "negative": 0.8057228915662651,
+          "neutral": 0.3346055979643766,
+          "positive": 0.9811267605633803
+        }
+      }
+    }
+  },
+  "versions": {
+    "python": "3.13.15",
+    "scikit-learn": "1.6.1",
+    "pandas": "2.3.3",
+    "numpy": "2.1.3",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.16.1"
+  }
+}
