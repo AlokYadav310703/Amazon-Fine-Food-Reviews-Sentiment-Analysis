@@ -2,7 +2,6 @@
 
 Classifies product reviews as **negative**, **neutral** or **positive** (1-2 stars = negative, 3 = neutral, 4-5 = positive). A **RoBERTa-base** model fine-tuned on Amazon Fine Food Reviews is compared with a TF-IDF + Logistic Regression baseline, and both are served in a **Streamlit** app.
 
-**Live demo:** _add your link here after deploying_
 
 ## Results
 
